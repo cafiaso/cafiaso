@@ -1,0 +1,35 @@
+[versions]
+
+shadow = "8.3.5"
+
+# Commons cli
+commons-cli = "1.9.0"
+
+# Logging
+slf4j = "2.0.13"
+
+# JUnit
+junit = "5.11.4"
+
+# Mockito
+mockito = "5.15.2"
+
+[libraries]
+
+# Commons cli
+commons-cli = { group = "commons-cli", name = "commons-cli", version.ref = "commons-cli" }
+
+# Logging
+slf4j-api = { group = "org.slf4j", name = "slf4j-api", version.ref = "slf4j" }
+slf4j-simple = { group = "org.slf4j", name = "slf4j-simple", version.ref = "slf4j" }
+
+# JUnit
+junit-platform-launcher = { group = "org.junit.platform", name = "junit-platform-launcher" }
+junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junit" }
+
+# Mockito
+mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mockito" }
+
+[plugins]
+
+shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
