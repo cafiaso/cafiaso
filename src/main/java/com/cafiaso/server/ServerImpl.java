@@ -1,8 +1,12 @@
-package com.cafiaso.server.server;
+package com.cafiaso.server;
 
+import com.cafiaso.server.configuration.ServerConfiguration;
 import com.cafiaso.server.network.server.NetworkServer;
+import jakarta.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
 
 /**
  * Default {@link Server} implementation.
@@ -12,17 +16,32 @@ public class ServerImpl implements Server {
     private static final Logger LOGGER = LoggerFactory.getLogger(ServerImpl.class);
 
     private final NetworkServer network;
+    private final ServerConfiguration configuration;
+    private final ServerIcon icon;
 
     private boolean running;
 
-    public ServerImpl(NetworkServer network) {
+    @Inject
+    public ServerImpl(NetworkServer network, ServerConfiguration configuration, ServerIcon icon) {
         this.network = network;
+        this.configuration = configuration;
+        this.icon = icon;
     }
 
     @Override
     public void start(String host, int port) {
         if (running) {
             throw new IllegalStateException("Server is already running");
+        }
+
+        // Load the server configuration
+        configuration.load();
+
+        // Load the server icon
+        try {
+            icon.load();
+        } catch (IOException e) {
+            LOGGER.warn("Failed to load icon", e);
         }
 
         try {
@@ -32,7 +51,7 @@ public class ServerImpl implements Server {
             running = true;
 
             LOGGER.info("Server started on {}:{}", host, port);
-        } catch (Exception e) {
+        } catch (IOException e) {
             LOGGER.error("Failed to start network server. Shutting down.", e);
         }
     }
@@ -48,7 +67,7 @@ public class ServerImpl implements Server {
             network.close();
 
             LOGGER.info("Server stopped");
-        } catch (Exception e) {
+        } catch (IOException e) {
             LOGGER.error("Failed to stop network server", e);
         } finally {
             running = false;

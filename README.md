@@ -31,7 +31,7 @@ Cafiaso is well documented, with clear and concise documentation for all classes
 ### Well Tested
 
 Cafiaso is well tested, with comprehensive suites that cover all aspects of the server.
-We aim to maintain a high level of code coverage to ensure the server is stable and reliable.
+We aim to maintain a high level of code coverage to ensure the server is stable and reliable (~=85%).
 
 ## Getting Started
 

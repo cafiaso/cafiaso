@@ -1,4 +1,4 @@
-package com.cafiaso.server.server;
+package com.cafiaso.server;
 
 /**
  * The Minecraft server instance.
@@ -11,11 +11,20 @@ package com.cafiaso.server.server;
 public interface Server {
 
     /**
+     * The Minecraft version this server is running.
+     */
+    String MINECRAFT_VERSION = "1.21.5";
+
+    /**
+     * The protocol version this server is running.
+     */
+    int PROTOCOL_VERSION = 770;
+
+    /**
      * Starts the server on the specified host and port.
      *
      * @param host the host to listen on
      * @param port the port to listen on
-     *
      * @throws IllegalStateException if the server is already running
      */
     void start(String host, int port);

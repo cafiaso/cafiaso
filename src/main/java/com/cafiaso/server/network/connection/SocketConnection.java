@@ -1,47 +1,43 @@
 package com.cafiaso.server.network.connection;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.cafiaso.server.network.protocol.io.FriendlyBuffer;
 
 import java.io.IOException;
-import java.nio.channels.SocketChannel;
+import java.net.Socket;
 
 /**
- * Default {@link Connection} implementation using Java NIO.
- * <p>
- * Data is read from the client socket channel.
+ * Default {@link Connection} implementation using {@link Socket} to write and read data.
  */
-public class SocketConnection implements Connection {
+public class SocketConnection extends Connection {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SocketConnection.class);
+    private final Socket socket;
 
-    private final SocketChannel channel;
-
-    public SocketConnection(SocketChannel channel) {
-        this.channel = channel;
+    public SocketConnection(Socket socket) {
+        this.socket = socket;
     }
 
     @Override
-    public void read() {
-        if (!channel.isOpen()) {
-            throw new IllegalStateException("Connection is closed");
-        }
+    public int read(FriendlyBuffer buffer) throws IOException {
+        return socket.getChannel().read(buffer.getBuffer());
+    }
 
-        LOGGER.debug("Reading socket channel");
+    @Override
+    public void write(FriendlyBuffer buffer) throws IOException {
+        socket.getChannel().write(buffer.getBuffer());
     }
 
     @Override
     public boolean isOpen() {
-        return channel.isOpen();
+        return socket.isConnected();
     }
 
     @Override
     public void close() throws IOException {
-        if (!channel.isOpen()) {
-            return;
-        }
+        socket.close();
+    }
 
-        // Close the socket channel
-        channel.close();
+    @Override
+    public String toString() {
+        return socket.getInetAddress().toString();
     }
 }
