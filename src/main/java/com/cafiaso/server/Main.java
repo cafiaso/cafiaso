@@ -1,8 +1,7 @@
 package com.cafiaso.server;
 
-import com.cafiaso.server.network.server.SocketServer;
-import com.cafiaso.server.server.Server;
-import com.cafiaso.server.server.ServerImpl;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -62,13 +61,23 @@ public class Main {
             String host = line.getOptionValue(hostOption, DEFAULT_HOST);
             int port = line.getParsedOptionValue(portOption, DEFAULT_PORT);
 
-            Server server = new ServerImpl(new SocketServer());
+            Injector injector = Guice.createInjector(new ServerModule());
+            Server server = injector.getInstance(Server.class);
+
             server.start(host, port);
 
             // Add a shutdown hook to stop the server gracefully
-            Runtime.getRuntime().addShutdownHook(new Thread(server::stop));
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                try {
+                    server.stop();
+                } catch (Exception e) {
+                    LOGGER.error("An error occurred while stopping the server", e);
+                }
+            }));
         } catch (ParseException e) {
             LOGGER.error("Failed to parse command line arguments", e);
+        } catch (Exception e) {
+            LOGGER.error("An error occurred while starting the server", e);
         }
     }
 }

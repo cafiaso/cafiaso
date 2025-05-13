@@ -11,25 +11,26 @@ repositories {
     mavenCentral()
 }
 
-val mockitoAgent = configurations.create("mockitoAgent")
-
 dependencies {
     // Commons cli
     implementation(libs.commons.cli)
+
+    // Guice
+    implementation(libs.guice)
+
+    // JSON
+    implementation(libs.json)
 
     // Logging
     implementation(libs.slf4j.api)
     implementation(libs.slf4j.simple)
 
     // JUnit
-    testImplementation(libs.junit.jupiter)
-    testRuntimeOnly(libs.junit.platform.launcher)
+    testImplementation(libs.junit.jupiter.engine)
 
     // Mockito
     testImplementation(libs.mockito.core)
-    mockitoAgent(libs.mockito.core) {
-        isTransitive = false
-    }
+    testImplementation(libs.mockito.junit.jupiter)
 }
 
 java {
@@ -55,6 +56,5 @@ tasks {
 
     test {
         useJUnitPlatform()
-        jvmArgs("-javaagent:${mockitoAgent.asPath}", "-XX:+EnableDynamicAgentLoading", "-Xshare:off")
     }
 }

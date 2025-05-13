@@ -5,6 +5,12 @@ shadow = "8.3.5"
 # Commons cli
 commons-cli = "1.9.0"
 
+# Guice
+guice = "7.0.0"
+
+# JSON
+json = "20250107"
+
 # Logging
 slf4j = "2.0.13"
 
@@ -19,16 +25,22 @@ mockito = "5.15.2"
 # Commons cli
 commons-cli = { group = "commons-cli", name = "commons-cli", version.ref = "commons-cli" }
 
+# Guice
+guice = { group = "com.google.inject", name = "guice", version.ref = "guice" }
+
+# JSON
+json = { group = "org.json", name = "json", version.ref = "json" }
+
 # Logging
 slf4j-api = { group = "org.slf4j", name = "slf4j-api", version.ref = "slf4j" }
 slf4j-simple = { group = "org.slf4j", name = "slf4j-simple", version.ref = "slf4j" }
 
 # JUnit
-junit-platform-launcher = { group = "org.junit.platform", name = "junit-platform-launcher" }
-junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junit" }
+junit-jupiter-engine = { group = "org.junit.jupiter", name = "junit-jupiter-engine", version.ref = "junit" }
 
 # Mockito
 mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mockito" }
+mockito-junit-jupiter = { group = "org.mockito", name = "mockito-junit-jupiter", version.ref = "mockito" }
 
 [plugins]
 
