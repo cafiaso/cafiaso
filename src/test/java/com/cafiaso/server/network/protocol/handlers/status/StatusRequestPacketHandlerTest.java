@@ -19,6 +19,10 @@ import java.util.Arrays;
 import java.util.Optional;
 import java.util.UUID;
 
+import static com.cafiaso.server.Server.MINECRAFT_VERSION;
+import static com.cafiaso.server.Server.PROTOCOL_VERSION;
+import static com.cafiaso.server.configuration.ServerConfiguration.DEFAULT_DESCRIPTION;
+import static com.cafiaso.server.configuration.ServerConfiguration.DEFAULT_MAX_PLAYERS;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -41,8 +45,8 @@ class StatusRequestPacketHandlerTest {
 
     @Test
     void handle_OK() throws IOException {
-        when(configuration.getMaxPlayers()).thenReturn(ServerConfiguration.DEFAULT_MAX_PLAYERS);
-        when(configuration.getDescription()).thenReturn(ServerConfiguration.DEFAULT_DESCRIPTION);
+        when(configuration.getMaxPlayers()).thenReturn(DEFAULT_MAX_PLAYERS);
+        when(configuration.getDescription()).thenReturn(DEFAULT_DESCRIPTION);
 
         when(icon.get()).thenReturn(Optional.of("data:image/png;base64,AQID"));
 
@@ -56,8 +60,8 @@ class StatusRequestPacketHandlerTest {
         handler.handle(packet, connection);
 
         StatusResponsePacket statusResponsePacket = new StatusResponsePacket(
-                "{\"favicon\":\"data:image/png;base64,AQID\",\"players\":{\"max\":20,\"online\":2,\"sample\":[{\"name\":\"player1\",\"id\":\"%s\"},{\"name\":\"player2\",\"id\":\"%s\"}]},\"description\":{\"text\":\"A Minecraft Server\"},\"version\":{\"protocol\":770,\"name\":\"1.21.5\"}}"
-                        .formatted(player1.id(), player2.id())
+                "{\"favicon\":\"data:image/png;base64,AQID\",\"players\":{\"max\":%d,\"online\":2,\"sample\":[{\"name\":\"player1\",\"id\":\"%s\"},{\"name\":\"player2\",\"id\":\"%s\"}]},\"description\":{\"text\":\"%s\"},\"version\":{\"protocol\":%d,\"name\":\"%s\"}}"
+                        .formatted(DEFAULT_MAX_PLAYERS, player1.id(), player2.id(), DEFAULT_DESCRIPTION, PROTOCOL_VERSION, MINECRAFT_VERSION)
         );
 
         verify(packetDispatcher).dispatch(statusResponsePacket, connection);
@@ -65,8 +69,8 @@ class StatusRequestPacketHandlerTest {
 
     @Test
     void handle_ShouldNotThrowException_WhenNoFavicon() throws IOException {
-        when(configuration.getMaxPlayers()).thenReturn(ServerConfiguration.DEFAULT_MAX_PLAYERS);
-        when(configuration.getDescription()).thenReturn(ServerConfiguration.DEFAULT_DESCRIPTION);
+        when(configuration.getMaxPlayers()).thenReturn(DEFAULT_MAX_PLAYERS);
+        when(configuration.getDescription()).thenReturn(DEFAULT_DESCRIPTION);
 
         when(icon.get()).thenReturn(Optional.empty());
 
@@ -80,8 +84,8 @@ class StatusRequestPacketHandlerTest {
         handler.handle(packet, connection);
 
         StatusResponsePacket statusResponsePacket = new StatusResponsePacket(
-                "{\"players\":{\"max\":20,\"online\":2,\"sample\":[{\"name\":\"player1\",\"id\":\"%s\"},{\"name\":\"player2\",\"id\":\"%s\"}]},\"description\":{\"text\":\"A Minecraft Server\"},\"version\":{\"protocol\":770,\"name\":\"1.21.5\"}}"
-                        .formatted(player1.id(), player2.id())
+                "{\"players\":{\"max\":%d,\"online\":2,\"sample\":[{\"name\":\"player1\",\"id\":\"%s\"},{\"name\":\"player2\",\"id\":\"%s\"}]},\"description\":{\"text\":\"%s\"},\"version\":{\"protocol\":%d,\"name\":\"%s\"}}"
+                        .formatted(DEFAULT_MAX_PLAYERS, player1.id(), player2.id(), DEFAULT_DESCRIPTION, PROTOCOL_VERSION, MINECRAFT_VERSION)
         );
 
         verify(packetDispatcher).dispatch(statusResponsePacket, connection);
