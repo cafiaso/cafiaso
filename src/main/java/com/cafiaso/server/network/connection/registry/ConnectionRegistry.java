@@ -32,7 +32,14 @@ public class ConnectionRegistry {
      * @param connection the connection to close
      */
     public void closeConnection(Connection connection) {
-        close(connection);
+        try {
+            connection.close();
+
+            LOGGER.info("Closed connection {}", connection);
+        } catch (IOException e) {
+            LOGGER.error("Failed to close connection {}", connection, e);
+        }
+
         connections.remove(connection);
     }
 
@@ -42,12 +49,12 @@ public class ConnectionRegistry {
      * This method is strictly equivalent to:
      * <pre>{@code
      * for (Connection connection : getConnections()) {
-     *     connection.close();
+     *     closeConnection(connection);
      * }
      * }</pre>
      */
     public void closeAllConnections() {
-        connections.forEach(this::close);
+        connections.iterator().forEachRemaining(this::closeConnection);
     }
 
     /**
@@ -57,20 +64,5 @@ public class ConnectionRegistry {
      */
     public Set<Connection> getConnections() {
         return connections;
-    }
-
-    /**
-     * Closes a connection, safely handling any exceptions that may occur.
-     *
-     * @param connection the connection to close
-     */
-    private void close(Connection connection) {
-        try {
-            connection.close();
-
-            LOGGER.info("Closed connection {}", connection);
-        } catch (IOException e) {
-            LOGGER.error("Failed to close connection {}", connection, e);
-        }
     }
 }

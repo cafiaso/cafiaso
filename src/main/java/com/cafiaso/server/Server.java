@@ -26,6 +26,7 @@ public interface Server {
      * @param host the host to listen on
      * @param port the port to listen on
      * @throws IllegalStateException if the server is already running
+     * @throws RuntimeException      if the server fails to start
      */
     void start(String host, int port);
 
@@ -33,6 +34,8 @@ public interface Server {
      * Stops the server and releases all resources.
      * <p>
      * Will fail silently if the server is not running.
+     *
+     * @throws RuntimeException if the server fails to stop
      */
     void stop();
 }

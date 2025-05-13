@@ -24,7 +24,7 @@ public interface ServerConfiguration {
     /**
      * Gets the maximum number of players that can be connected to the server.
      * <p>
-     * Defaults to {@code DEFAULT_MAXIMUM_PLAYERS}
+     * Defaults to {@code DEFAULT_MAX_PLAYERS}.
      *
      * @return the maximum number of players
      */
@@ -33,7 +33,7 @@ public interface ServerConfiguration {
     /**
      * Gets the description (motd) of the server.
      * <p>
-     * Defaults to {@code DEFAULT_DESCRIPTION}
+     * Defaults to {@code DEFAULT_DESCRIPTION}.
      *
      * @return the description of the server
      */
@@ -42,7 +42,7 @@ public interface ServerConfiguration {
     /**
      * Gets the favicon of the server.
      * <p>
-     * Defaults to {@code DEFAULT_FAVICON}
+     * Defaults to {@code DEFAULT_FAVICON}.
      *
      * @return the favicon of the server
      */

@@ -67,9 +67,17 @@ public class Main {
             server.start(host, port);
 
             // Add a shutdown hook to stop the server gracefully
-            Runtime.getRuntime().addShutdownHook(new Thread(server::stop));
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                try {
+                    server.stop();
+                } catch (Exception e) {
+                    LOGGER.error("An error occurred while stopping the server", e);
+                }
+            }));
         } catch (ParseException e) {
             LOGGER.error("Failed to parse command line arguments", e);
+        } catch (Exception e) {
+            LOGGER.error("An error occurred while starting the server", e);
         }
     }
 }

@@ -26,7 +26,7 @@ public class ResourceManager {
         InputStream inputStream = Main.class.getClassLoader().getResourceAsStream(path);
 
         if (inputStream == null) {
-            throw new IOException("File not found");
+            throw new IOException("Resource not found: %s".formatted(path));
         }
 
         return inputStream;
@@ -43,7 +43,7 @@ public class ResourceManager {
         URL url = Main.class.getClassLoader().getResource(path);
 
         if (url == null) {
-            throw new IOException("File not found");
+            throw new IOException("Resource not found: %s".formatted(path));
         }
 
         return new File(url.getFile());

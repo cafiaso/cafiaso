@@ -52,7 +52,7 @@ public class ServerImpl implements Server {
 
             LOGGER.info("Server started on {}:{}", host, port);
         } catch (IOException e) {
-            LOGGER.error("Failed to start network server. Shutting down.", e);
+            throw new RuntimeException("Failed to start server", e);
         }
     }
 
@@ -68,7 +68,7 @@ public class ServerImpl implements Server {
 
             LOGGER.info("Server stopped");
         } catch (IOException e) {
-            LOGGER.error("Failed to stop network server", e);
+            throw new RuntimeException("Failed to stop server", e);
         } finally {
             running = false;
         }

@@ -28,7 +28,7 @@ public class SocketConnection extends Connection {
 
     @Override
     public boolean isOpen() {
-        return socket.isConnected();
+        return !socket.isClosed();
     }
 
     @Override

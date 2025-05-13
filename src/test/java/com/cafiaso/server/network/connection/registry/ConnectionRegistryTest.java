@@ -61,6 +61,8 @@ class ConnectionRegistryTest {
 
         verify(connection1).close();
         verify(connection2).close();
+
+        assertTrue(registry.getConnections().isEmpty());
     }
 
     @Test
@@ -77,6 +79,8 @@ class ConnectionRegistryTest {
 
         verify(connection1).close();
         verify(connection2).close();
+
+        assertTrue(registry.getConnections().isEmpty());
     }
 }
 
