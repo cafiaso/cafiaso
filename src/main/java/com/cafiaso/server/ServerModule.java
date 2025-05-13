@@ -9,7 +9,8 @@ public class ServerModule extends AbstractModule {
 
     @Override
     protected void configure() {
-        bind(Server.class).to(ServerImpl.class);
+        // Configuration must be used as a singleton to ensure that the same instance is used
+        // (loaded during the server start)
         bind(ServerConfiguration.class).to(PropertiesServerConfiguration.class).asEagerSingleton();
 
         install(new NetworkModule());

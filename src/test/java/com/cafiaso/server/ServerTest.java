@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class ServerImplTest {
+class ServerTest {
 
     @Mock
     private NetworkServer networkServer;
@@ -26,7 +26,7 @@ class ServerImplTest {
     private ServerIcon icon;
 
     @InjectMocks
-    private ServerImpl server;
+    private Server server;
 
     @Test
     void start_OK() throws IOException {
