@@ -34,6 +34,9 @@ public class DataTypes {
     /**
      * Creates a new {@link EnumDataType} for the given enum class and data type.
      * <p>
+     * This is simply a convenience method for creating an {@link EnumDataType} without
+     * explicitly specifying a mapper function (which is not needed in most cases).
+     * <p>
      * Example usage for a {@code VarInt} enum:
      * <pre>{@code
      * public enum TestEnum implements Supplier<Integer> {
@@ -56,7 +59,7 @@ public class DataTypes {
      * DataType<TestEnum> type = DataTypes.ENUM(TestEnum.class, DataTypes.VAR_INT);
      * }</pre>
      *
-     * @param enumClass the enum class
+     * @param enumClass the enum class (must implement {@link Supplier})
      * @param type      the {@link DataType} for the enum values
      * @param <E>       the enum type
      * @param <T>       the type of the data
