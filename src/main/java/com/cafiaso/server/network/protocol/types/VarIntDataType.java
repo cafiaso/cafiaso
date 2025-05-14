@@ -6,8 +6,19 @@ import com.cafiaso.server.network.protocol.io.FriendlyBuffer;
 /**
  * A {@link DataType} for VarInt values.
  * <p>
- * VarInt is a variable-length integer encoding scheme used in various protocols.
+ * VarInts are variable-length integers.
+ * <p>
+ * Bounds: [-2,147,483,648, 2,147,483,647]
+ * <p>
  * It allows for efficient storage of integers by using fewer bytes for smaller values.
+ * <p>
+ * Some examples of VarInt values and their corresponding representation in decimal:
+ * <ul>
+ *     <li>0x00 -> 0</li>
+ *     <li>0x7F -> 127</li>
+ *     <li>0x80 0x01 -> 128</li>
+ *     <li>0xdd 0xc7 0x01 -> 25565</li>
+ * </ul>
  *
  * @see <a href="https://wiki.vg/Protocol#VarInt_and_VarLong">VarInt Type</a>
  */

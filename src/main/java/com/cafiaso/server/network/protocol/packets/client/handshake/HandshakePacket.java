@@ -6,6 +6,7 @@ import com.cafiaso.server.network.protocol.DataTypes;
 import com.cafiaso.server.network.protocol.packets.client.PacketDeserializer;
 
 import java.io.IOException;
+import java.util.function.Supplier;
 
 /**
  * Sent by the client to initiate the connection (ping or login).
@@ -21,7 +22,7 @@ public record HandshakePacket(int protocolVersion, String serverAddress, int ser
     /**
      * Represents the next state that the client wants to transition to after the handshake.
      */
-    public enum Intention {
+    public enum Intention implements Supplier<Integer> {
         /**
          * Switch to {@link com.cafiaso.server.network.connection.ConnectionState#STATUS}
          */
@@ -41,7 +42,8 @@ public record HandshakePacket(int protocolVersion, String serverAddress, int ser
             this.id = id;
         }
 
-        public int getId() {
+        @Override
+        public Integer get() {
             return id;
         }
     }
@@ -53,7 +55,7 @@ public record HandshakePacket(int protocolVersion, String serverAddress, int ser
         public static final DataType<Integer> PROTOCOL_VERSION_TYPE = DataTypes.VAR_INT;
         public static final DataType<String> SERVER_ADDRESS_TYPE = DataTypes.STRING(MAX_SERVER_ADDRESS_LENGTH);
         public static final DataType<Integer> SERVER_PORT_TYPE = DataTypes.UNSIGNED_SHORT;
-        public static final DataType<Intention> NEXT_STATE_TYPE = DataTypes.ENUM(Intention.class, DataTypes.VAR_INT, Intention::getId);
+        public static final DataType<Intention> NEXT_STATE_TYPE = DataTypes.ENUM(Intention.class, DataTypes.VAR_INT);
 
         @Override
         public int getId() {

@@ -39,12 +39,12 @@ public class EnumDataType<E extends Enum<E>, T, D extends DataType<T>> implement
 
     private final Class<E> enumClass;
     private final D type;
-    private final Function<E, T> getter;
+    private final Function<E, T> mapper;
 
-    public EnumDataType(Class<E> enumClass, D type, Function<E, T> getter) {
+    public EnumDataType(Class<E> enumClass, D type, Function<E, T> mapper) {
         this.enumClass = enumClass;
         this.type = type;
-        this.getter = getter;
+        this.mapper = mapper;
     }
 
     @Override
@@ -53,7 +53,9 @@ public class EnumDataType<E extends Enum<E>, T, D extends DataType<T>> implement
         T value = type.read(in);
 
         for (E constant : constants) {
-            if (getter.apply(constant).equals(value)) {
+            if (mapper.apply(constant).equals(value)) {
+                // Check if the value matches the enum constant
+                // If it does, return the constant
                 return constant;
             }
         }
@@ -63,6 +65,6 @@ public class EnumDataType<E extends Enum<E>, T, D extends DataType<T>> implement
 
     @Override
     public void write(E value, FriendlyBuffer out) throws IOException {
-        type.write(getter.apply(value), out);
+        type.write(mapper.apply(value), out);
     }
 }
