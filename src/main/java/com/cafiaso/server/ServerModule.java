@@ -2,6 +2,7 @@ package com.cafiaso.server;
 
 import com.cafiaso.server.configuration.PropertiesServerConfiguration;
 import com.cafiaso.server.configuration.ServerConfiguration;
+import com.cafiaso.server.encryption.Encryption;
 import com.cafiaso.server.network.NetworkModule;
 import com.google.inject.AbstractModule;
 
@@ -12,6 +13,10 @@ public class ServerModule extends AbstractModule {
         // Configuration must be used as a singleton to ensure that the same instance is used
         // (loaded during the server start)
         bind(ServerConfiguration.class).to(PropertiesServerConfiguration.class).asEagerSingleton();
+
+        // Encryption must be used as a singleton to ensure that the same instance is used
+        // (loaded during the server start)
+        bind(Encryption.class).asEagerSingleton();
 
         install(new NetworkModule());
     }

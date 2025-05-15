@@ -32,7 +32,7 @@ class HandshakePacketTest {
     @Test
     void deserialize_ShouldThrowException_WhenAddressIsTooLong() throws IOException {
         int protocolVersion = Server.PROTOCOL_VERSION;
-        String serverAddress = "0".repeat(MAX_SERVER_ADDRESS_LENGTH + 1);
+        String serverAddress = "0".repeat(256);
         int serverPort = 25565;
         HandshakePacket.Intention nextState = HandshakePacket.Intention.STATUS;
 

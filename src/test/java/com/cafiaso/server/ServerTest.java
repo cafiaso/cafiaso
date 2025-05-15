@@ -1,6 +1,7 @@
 package com.cafiaso.server;
 
 import com.cafiaso.server.configuration.ServerConfiguration;
+import com.cafiaso.server.encryption.Encryption;
 import com.cafiaso.server.network.server.NetworkServer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,6 +21,9 @@ class ServerTest {
     private NetworkServer networkServer;
 
     @Mock
+    private Encryption encryption;
+
+    @Mock
     private ServerConfiguration configuration;
 
     @Mock
@@ -37,6 +41,7 @@ class ServerTest {
 
         verify(networkServer).bind(host, port);
 
+        verify(encryption).generateKeyPair();
         verify(configuration).load();
         verify(icon).load();
         verify(networkServer).bind(host, port);

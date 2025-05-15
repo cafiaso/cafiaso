@@ -28,6 +28,11 @@ public class VarIntDataType implements DataType<Integer> {
     private static final int CONTINUE_BIT = 0x80;
 
     @Override
+    public Class<Integer> getType() {
+        return Integer.class;
+    }
+
+    @Override
     public Integer read(FriendlyBuffer in) {
         int value = 0;
         int position = 0;

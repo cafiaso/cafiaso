@@ -21,6 +21,11 @@ import com.cafiaso.server.network.protocol.io.FriendlyBuffer;
 public class UnsignedShortType implements DataType<Integer> {
 
     @Override
+    public Class<Integer> getType() {
+        return Integer.class;
+    }
+
+    @Override
     public Integer read(FriendlyBuffer in) {
         return in.readUnsignedShort();
     }

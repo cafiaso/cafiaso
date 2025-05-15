@@ -1,13 +1,21 @@
 package com.cafiaso.server.network.connection;
 
 import com.cafiaso.server.network.protocol.PacketHandler;
+import com.cafiaso.server.network.protocol.handlers.configuration.ServerboundKnownPacksHandler;
 import com.cafiaso.server.network.protocol.handlers.handshake.HandshakePacketHandler;
 import com.cafiaso.server.network.protocol.handlers.handshake.LegacyServerListPingPacketHandler;
+import com.cafiaso.server.network.protocol.handlers.login.EncryptionResponsePacketHandler;
+import com.cafiaso.server.network.protocol.handlers.login.LoginAcknowledgedPacketHandler;
+import com.cafiaso.server.network.protocol.handlers.login.LoginStartPacketHandler;
 import com.cafiaso.server.network.protocol.handlers.status.PingRequestPacketHandler;
 import com.cafiaso.server.network.protocol.handlers.status.StatusRequestPacketHandler;
 import com.cafiaso.server.network.protocol.packets.client.PacketDeserializer;
+import com.cafiaso.server.network.protocol.packets.client.configuration.ServerboundKnownPacks;
 import com.cafiaso.server.network.protocol.packets.client.handshake.HandshakePacket;
 import com.cafiaso.server.network.protocol.packets.client.handshake.LegacyServerListPingPacket;
+import com.cafiaso.server.network.protocol.packets.client.login.EncryptionResponsePacket;
+import com.cafiaso.server.network.protocol.packets.client.login.LoginAcknowledgedPacket;
+import com.cafiaso.server.network.protocol.packets.client.login.LoginStartPacket;
 import com.cafiaso.server.network.protocol.packets.client.status.PingRequestPacket;
 import com.cafiaso.server.network.protocol.packets.client.status.StatusRequestPacket;
 import com.cafiaso.server.utils.Pair;
@@ -49,13 +57,19 @@ public enum ConnectionState {
      *
      * @see <a href="https://minecraft.wiki/w/Minecraft_Wiki:Projects/wiki.vg_merge/Protocol#Login">Login</a>
      */
-    LOGIN,
+    LOGIN(
+            entry(new LoginStartPacket.Deserializer(), LoginStartPacketHandler.class),
+            entry(new EncryptionResponsePacket.Deserializer(), EncryptionResponsePacketHandler.class),
+            entry(new LoginAcknowledgedPacket.Deserializer(), LoginAcknowledgedPacketHandler.class)
+    ),
     /**
      * Configuration process.
      *
      * @see <a href="https://minecraft.wiki/w/Minecraft_Wiki:Projects/wiki.vg_merge/Protocol#Configuration">Configuration</a>
      */
-    CONFIGURATION,
+    CONFIGURATION(
+            entry(new ServerboundKnownPacks.Deserializer(), ServerboundKnownPacksHandler.class)
+    ),
     /**
      * Main game interaction.
      *

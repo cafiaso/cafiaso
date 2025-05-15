@@ -16,7 +16,7 @@ class StatusResponsePacketTest {
 
     @Test
     void serialize_OK() throws IOException {
-        String jsonResponse = "{\"players\":{\"max\":%d,\"online\":10},\"description\":{\"text\":\"%s\"},\"version\":{\"protocol\":%d,\"name\":\"%s\"}}"
+        String jsonResponse = "{\"players\":{\"max\":%d,\"online\":10},\"description\":{\"text\":\"%s\"},\"version\":{\"protocol\":%d,\"username\":\"%s\"}}"
                 .formatted(DEFAULT_MAX_PLAYERS, DEFAULT_DESCRIPTION, PROTOCOL_VERSION, MINECRAFT_VERSION);
 
         FriendlyBuffer buffer = new FriendlyBuffer();

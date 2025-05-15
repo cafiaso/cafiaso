@@ -27,6 +27,11 @@ public class SocketConnection extends Connection {
     }
 
     @Override
+    public String getHostAddress() {
+        return socket.getInetAddress().getHostAddress();
+    }
+
+    @Override
     public boolean isOpen() {
         return !socket.isClosed();
     }

@@ -6,7 +6,7 @@ import com.cafiaso.server.network.connection.Connection;
 import com.cafiaso.server.network.protocol.dispatcher.PacketDispatcher;
 import com.cafiaso.server.network.protocol.packets.client.status.StatusRequestPacket;
 import com.cafiaso.server.network.protocol.packets.server.status.StatusResponsePacket;
-import com.cafiaso.server.player.Identity;
+import com.cafiaso.server.network.connection.Identity;
 import com.cafiaso.server.player.PlayerManager;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

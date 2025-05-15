@@ -1,5 +1,7 @@
 package com.cafiaso.server.player;
 
+import com.cafiaso.server.network.connection.Identity;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;

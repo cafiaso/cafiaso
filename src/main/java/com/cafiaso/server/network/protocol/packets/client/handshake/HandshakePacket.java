@@ -50,10 +50,8 @@ public record HandshakePacket(int protocolVersion, String serverAddress, int ser
 
     public static class Deserializer implements PacketDeserializer<HandshakePacket> {
 
-        public static final int MAX_SERVER_ADDRESS_LENGTH = 255;
-
         public static final DataType<Integer> PROTOCOL_VERSION_TYPE = DataTypes.VAR_INT;
-        public static final DataType<String> SERVER_ADDRESS_TYPE = DataTypes.STRING(MAX_SERVER_ADDRESS_LENGTH);
+        public static final DataType<String> SERVER_ADDRESS_TYPE = DataTypes.STRING(255);
         public static final DataType<Integer> SERVER_PORT_TYPE = DataTypes.UNSIGNED_SHORT;
         public static final DataType<Intention> NEXT_STATE_TYPE = DataTypes.ENUM(Intention.class, DataTypes.VAR_INT);
 
