@@ -51,7 +51,8 @@ public class PacketReader {
 
         LOGGER.debug("{} bytes incoming from {}", readBytes, connection);
 
-        buffer.flip(); // Prepare the buffer for reading
+        // Decrypt the buffer using the shared secret
+        buffer.decrypt(connection.getSharedSecret());
 
         while (buffer.hasRemainingBytes()) {
             buffer.mark(); // Mark the current position in the buffer
@@ -62,6 +63,8 @@ public class PacketReader {
 
             int remainingBytes = buffer.getRemainingBytes();
             if (remainingBytes < packetLength) {
+                LOGGER.debug("Not enough bytes to read the packet data, waiting for more data");
+
                 // Not enough bytes to read the packet data, reset the buffer and wait for more data
                 buffer.reset();
                 buffer.compact();
@@ -72,8 +75,11 @@ public class PacketReader {
             // Create a copy of the buffer for the packet body
             FriendlyBuffer packetBodyBuffer = buffer.copy(packetLength);
 
+            // Process the packet
             processor.process(packetLength, packetBodyBuffer, connection);
         }
+
+        LOGGER.debug("{} bytes processed", readBytes);
 
         buffer.compact(); // Compact the buffer to remove the processed data
     }

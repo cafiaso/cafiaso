@@ -20,6 +20,13 @@ import java.io.IOException;
 public interface DataType<T> {
 
     /**
+     * Gets the class type of the data.
+     *
+     * @return the class type of the data
+     */
+    Class<T> getType();
+
+    /**
      * Reads a value of type {@code T} from the given {@link FriendlyBuffer}.
      *
      * @param in the buffer to read from

@@ -29,6 +29,11 @@ public class StringDataType implements DataType<String> {
     }
 
     @Override
+    public Class<String> getType() {
+        return String.class;
+    }
+
+    @Override
     public String read(FriendlyBuffer in) throws IOException {
         // Read the length of the string
         int length = in.read(DataTypes.VAR_INT);

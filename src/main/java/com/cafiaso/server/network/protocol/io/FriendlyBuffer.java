@@ -1,7 +1,12 @@
 package com.cafiaso.server.network.protocol.io;
 
 import com.cafiaso.server.network.protocol.DataType;
+import com.cafiaso.server.utils.EncryptionUtils;
+import com.cafiaso.server.utils.HexUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import javax.crypto.SecretKey;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
@@ -21,6 +26,8 @@ import java.nio.ByteBuffer;
  */
 public class FriendlyBuffer {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(FriendlyBuffer.class);
+
     private static final int DEFAULT_BUFFER_SIZE = 8192;
 
     private final ByteBuffer buffer;
@@ -35,6 +42,52 @@ public class FriendlyBuffer {
 
     public FriendlyBuffer(byte[] data) {
         buffer = ByteBuffer.wrap(data);
+    }
+
+    public void encrypt(SecretKey sharedSecret) throws IOException {
+        LOGGER.debug("Encrypting buffer with shared secret");
+
+        flip(); // Switch to write mode to get buffer contents
+
+        byte[] decryptedData = toByteArray();
+
+        LOGGER.debug("Decrypted data: {}", HexUtils.toHexString(decryptedData));
+
+        if (sharedSecret != null) {
+            // Encrypt the packet buffer using the shared secret
+            byte[] encryptedData = EncryptionUtils.encrypt(decryptedData, sharedSecret);
+
+            LOGGER.debug("Encrypted data: {}", HexUtils.toHexString(encryptedData));
+
+            // Clear the buffer and write the encrypted data
+            buffer.clear();
+            buffer.put(encryptedData);
+        }
+
+        flip(); // Switch back to read mode to read the encrypted data and write it to the connection
+    }
+
+    public void decrypt(SecretKey sharedSecret) throws IOException {
+        LOGGER.debug("Decrypting buffer with shared secret");
+
+        flip(); // Switch to write mode to get buffer contents
+
+        byte[] encryptedData = toByteArray();
+
+        LOGGER.debug("Encrypted data: {}", HexUtils.toHexString(encryptedData));
+
+        if (sharedSecret != null) {
+            // Decrypt the packet buffer using the shared secret
+            byte[] decryptedData = EncryptionUtils.decrypt(encryptedData, sharedSecret);
+
+            LOGGER.debug("Decrypted data: {}", HexUtils.toHexString(decryptedData));
+
+            // Clear the buffer and write the decrypted data
+            buffer.clear();
+            buffer.put(decryptedData);
+        }
+
+        flip(); // Switch back to read mode to read the decrypted data
     }
 
     /**
@@ -204,11 +257,13 @@ public class FriendlyBuffer {
     }
 
     /**
-     * Writes the contents of the specified {@link FriendlyBuffer} to this buffer.
+     * Flips the given buffer and writes its contents to this buffer.
      *
      * @param buffer the buffer to write from
      */
     public void write(FriendlyBuffer buffer) {
+        buffer.flip();
+
         this.buffer.put(buffer.buffer);
     }
 

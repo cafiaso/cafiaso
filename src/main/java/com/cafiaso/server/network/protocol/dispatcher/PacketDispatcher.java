@@ -12,8 +12,8 @@ import java.io.IOException;
 /**
  * A dispatcher to send a {@link SerializablePacket}s to the given {@link Connection}.
  * <p>
- * It handles the serialization of the packet body (ID and data), computes the packet length
- * and sends the packet to the connection.
+ * It handles the serialization of the packet body (ID and data), computes the packet length,
+ * encrypts the packet if necessary, and writes it to the connection.
  */
 public class PacketDispatcher {
 
@@ -22,32 +22,29 @@ public class PacketDispatcher {
     /**
      * Sends a packet to the given {@link Connection}.
      *
-     * @param packet the packet to send
+     * @param packet     the packet to send
      * @param connection the connection to send the packet to
      * @throws IOException if an I/O error occurs while sending the packet
      */
     public void dispatch(SerializablePacket packet, Connection connection) throws IOException {
-        // Temporary buffer that holds the packet body
+        // Holds the packet body (ID and data) (unencrypted)
         FriendlyBuffer bodyBuffer = new FriendlyBuffer();
         bodyBuffer.write(packet.getId(), DataTypes.VAR_INT); // Write the packet ID
         packet.serialize(bodyBuffer); // Write the packet data
 
         int packetLength = bodyBuffer.getPosition();
 
-        // Prepare the body buffer for reading in the final packet buffer
-        bodyBuffer.flip();
+        LOGGER.debug("{} bytes outgoing to {}", packetLength, connection);
 
-        // Final packet buffer
+        // Holds the packet (length and body) (unencrypted)
         FriendlyBuffer packetBuffer = new FriendlyBuffer();
         packetBuffer.write(packetLength, DataTypes.VAR_INT); // Write the packet length
         packetBuffer.write(bodyBuffer); // Write the packet body
 
-        // Prepare the packet buffer for reading in the connection
-        packetBuffer.flip();
+        // Encrypt the packet buffer using the shared secret
+        packetBuffer.encrypt(connection.getSharedSecret());
 
-        LOGGER.debug("{} bytes outgoing to {}", packetLength, connection);
-
-        // Send the buffer to the connection
+        // Write the packet to the connection
         connection.write(packetBuffer);
 
         LOGGER.debug("Sent packet {} to {}", packet, connection);

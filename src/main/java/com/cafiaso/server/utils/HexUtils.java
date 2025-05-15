@@ -39,11 +39,11 @@ public class HexUtils {
      * @param b the byte array to convert
      * @return the hexadecimal string
      */
-    public static String toHexString(byte[] b, int length) {
+    public static String toHexString(byte[] b) {
         StringJoiner joiner = new StringJoiner(" ");
 
-        for (int i = 0; i < length; i++) {
-            joiner.add(HEX_FORMAT.formatted(b[i]));
+        for (byte value : b) {
+            joiner.add(HEX_FORMAT.formatted(value));
         }
 
         return joiner.toString();

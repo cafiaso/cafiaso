@@ -21,6 +21,11 @@ import com.cafiaso.server.network.protocol.io.FriendlyBuffer;
 public class LongDataType implements DataType<Long> {
 
     @Override
+    public Class<Long> getType() {
+        return Long.class;
+    }
+
+    @Override
     public Long read(FriendlyBuffer in) {
         return in.readLong();
     }

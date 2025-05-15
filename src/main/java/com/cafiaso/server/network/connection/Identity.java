@@ -1,4 +1,4 @@
-package com.cafiaso.server.player;
+package com.cafiaso.server.network.connection;
 
 import java.util.UUID;
 

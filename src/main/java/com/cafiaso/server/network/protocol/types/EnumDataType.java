@@ -48,6 +48,11 @@ public class EnumDataType<E extends Enum<E>, T, D extends DataType<T>> implement
     }
 
     @Override
+    public Class<E> getType() {
+        return enumClass;
+    }
+
+    @Override
     public E read(FriendlyBuffer in) throws IOException {
         E[] constants = enumClass.getEnumConstants();
         T value = type.read(in);

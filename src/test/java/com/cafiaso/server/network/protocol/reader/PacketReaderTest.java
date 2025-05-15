@@ -77,6 +77,11 @@ class PacketReaderTest {
         }
 
         @Override
+        public String getHostAddress() {
+            return "";
+        }
+
+        @Override
         public boolean isOpen() {
             return true;
         }

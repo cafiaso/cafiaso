@@ -1,6 +1,7 @@
 package com.cafiaso.server;
 
 import com.cafiaso.server.configuration.ServerConfiguration;
+import com.cafiaso.server.encryption.Encryption;
 import com.cafiaso.server.network.server.NetworkServer;
 import jakarta.inject.Inject;
 import org.slf4j.Logger;
@@ -31,14 +32,16 @@ public class Server {
     public static final int PROTOCOL_VERSION = 770;
 
     private final NetworkServer network;
+    private final Encryption encryption;
     private final ServerConfiguration configuration;
     private final ServerIcon icon;
 
     private boolean running;
 
     @Inject
-    public Server(NetworkServer network, ServerConfiguration configuration, ServerIcon icon) {
+    public Server(NetworkServer network, Encryption encryption, ServerConfiguration configuration, ServerIcon icon) {
         this.network = network;
+        this.encryption = encryption;
         this.configuration = configuration;
         this.icon = icon;
     }
@@ -55,6 +58,9 @@ public class Server {
         if (running) {
             throw new IllegalStateException("Server is already running");
         }
+
+        // Load the encryption keys
+        encryption.generateKeyPair();
 
         // Load the server configuration
         configuration.load();
